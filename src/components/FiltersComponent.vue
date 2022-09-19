@@ -192,7 +192,6 @@ li div label {
       repeat;
     position: relative;
     z-index: 1;
-    // box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.13);
     height: 50px;
     display: flex;
     align-items: center;
@@ -352,8 +351,6 @@ li div label {
   }
 
   &__check-wrapp {
-    // position: relative;
-    // left: -85px;
     padding: 0 25px;
     margin-bottom: 5px;
     @media only screen and (max-width: 600px) {
