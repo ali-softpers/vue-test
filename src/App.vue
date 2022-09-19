@@ -1,20 +1,34 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="filters">
+    <FiltersComponent :countries="countriesJson" :regions="regionsJson" />
+    <AdvancedFiltersComponent :all="allJson" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FiltersComponent from "./components/FiltersComponent.vue";
+import AdvancedFiltersComponent from "./components/AdvancedFiltersComponent.vue";
+import CountriesJson from "./data/countries.json";
+import RegionsJson from "./data/regions.json";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    FiltersComponent,
+    AdvancedFiltersComponent,
+  },
+  data() {
+    return {
+      countriesJson: CountriesJson,
+      regionsJson: RegionsJson,
+      allJson: CountriesJson.concat(RegionsJson),
+      
+    };
   }
-}
+};
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
