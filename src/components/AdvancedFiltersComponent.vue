@@ -1,21 +1,15 @@
 <template>
-  <a
-    class="advanced-btn h50"
-    id="advanced-btn"
-    data-bs-toggle="modal"
-    data-bs-target="#exampleModal"
-  >
-    <div class="advanced-btn__title">Advanced Filters</div>
-  </a>
   <!-- Button trigger modal -->
 
   <!-- Modal -->
   <div
     class="modal fade"
-    id="exampleModal"
+    id="advancedModal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
   >
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
@@ -50,7 +44,7 @@
                   px-2
                   float-start
                   pointer
-                  color-primary
+                  color-primary-dark
                   font-weight-bold
                   advanced-filter-tab
                 "
@@ -81,6 +75,7 @@
                       placeholder="Search regions"
                       v-model="searchAll"
                       id="searchAll-wrapper-div"
+                      :class="{ 'searchAll-wrapper-div-expanded':this.displaySuggestion}"
                     />
                     <div class="form-control-select">
                       <ul
@@ -92,14 +87,14 @@
                           results
                           m-0
                           bg-color-primary
-                          rounded
                         "
+                        :class="{'searchAll-wrapper-ul-expanded':this.displaySuggestion}"
                         id="searchAll-wrapper-ul"
                       >
                         <li
                           v-for="(filteredValue, index) in filteredJson"
                           :key="index"
-                          class="hovered d-flex align-items-center"
+                          class="py-1 hovered d-flex align-items-center"
                           @click="addToSelected(filteredValue)"
                         >
                           <span>{{ filteredValue }}</span>
@@ -114,13 +109,16 @@
                   <li
                     v-for="(advancedfilter, index) in checkedAdvancedFilters"
                     :key="index"
-                    @click="delete checkedAdvancedFilters[index]"
-                    class="list-custom__item mx-2 mt-2"
+                    class="list-custom__item mx-3 my-2"
                   >
-                    <span class="border px-3 py-2 rounded spansHere">
-                        {{ advancedfilter }}
+                    <span class="border px-3 py-2 rounded badge-wrapper">
+                      {{ advancedfilter }}
+                      <span
+                        @click="checkedAdvancedFilters.splice(index, 1)"
+                        class="badge bg-color-primary-dark rounded badge-close"
+                        >x</span
+                      >
                     </span>
-                    
                   </li>
                 </ul>
               </div>
@@ -135,6 +133,7 @@
             type="button"
             class="btn btn-light rounded-pill text-success"
             data-bs-dismiss="modal"
+            @click="this.$emit('clicked')"
           >
             Cancel
           </button>
@@ -145,6 +144,8 @@
 </template>
 
 <script>
+import * as $ from 'jquery/src/jquery';
+
 export default {
   name: "AdvancedFiltersComponent",
   props: {
@@ -170,27 +171,18 @@ export default {
     checkSuggestion: function () {
       if (this.searchAll.length !== 0) {
         this.displaySuggestion = true;
-        document
-          .getElementById("searchAll-wrapper-div")
-          .classList.add("searchAll-wrapper-div-expanded");
-        document
-          .getElementById("searchAll-wrapper-ul")
-          .classList.add("searchAll-wrapper-ul-expanded");
       } else {
         this.displaySuggestion = false;
-        document
-          .getElementById("searchAll-wrapper-div")
-          .classList.remove("searchAll-wrapper-div-expanded");
-        document
-          .getElementById("searchAll-wrapper-ul")
-          .classList.remove("searchAll-wrapper-ul-expanded");
       }
     },
     addToSelected: function (value) {
       if (!this.checkedAdvancedFilters.includes(value)) {
         this.checkedAdvancedFilters.push(value);
       }
-    }
+    },
+  },
+  mounted() {
+    $("#advancedModal").modal("show");
   },
 };
 </script>
@@ -243,12 +235,16 @@ body {
   }
 }
 
-.color-primary {
+.color-primary-dark {
   color: #5abf6e !important;
 }
 
 .bg-color-primary {
   background-color: #c4ffcf !important;
+}
+
+.bg-color-primary-dark {
+  background-color: #5abf6e !important;
 }
 
 .font-weight-bold {
@@ -300,6 +296,12 @@ body {
 
 #searchAll-wrapper-div:focus {
   border-color: #b8b8b8 !important;
+  box-shadow: none;
+}
+
+#searchAll-wrapper-ul {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .searchAll-wrapper-div-expanded {
@@ -320,11 +322,15 @@ body {
 }
 
 .list-custom {
-    list-style: none;
-    padding-left: 0;
-    &__item {
-        display: inline-block;
-    }
+  list-style: none;
+  padding-left: 0;
+  &__item {
+    display: inline-block;
+  }
 }
-
+.badge-close {
+    position: relative;
+    top: -10px;
+    left: 40px;
+}
 </style>

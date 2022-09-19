@@ -7,7 +7,4 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-window.$ = window.jQuery = require('jquery');
-
-
 createApp(App).mount('#app')

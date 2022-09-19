@@ -1,7 +1,16 @@
 <template>
   <div class="filters">
     <FiltersComponent :countries="countriesJson" :regions="regionsJson" />
-    <AdvancedFiltersComponent :all="allJson" />
+    <a
+      class="advanced-btn h50"
+      id="advanced-btn"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+      @click="showModal = true"
+    >
+      <div class="advanced-btn__title">Advanced Filters</div>
+    </a>
+    <AdvancedFiltersComponent @clicked="closeModal" v-if="showModal" :all="allJson" />
   </div>
 </template>
 
@@ -22,9 +31,14 @@ export default {
       countriesJson: CountriesJson,
       regionsJson: RegionsJson,
       allJson: CountriesJson.concat(RegionsJson),
-      
+      showModal: false,
     };
-  }
+  },
+  methods: {
+    closeModal: function(){
+      this.showModal=false;
+    }
+  },
 };
 </script>
 
